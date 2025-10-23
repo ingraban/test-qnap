@@ -16,6 +16,6 @@ public class DemoApplication {
 class HelloController {
     @GetMapping("/")
     public String hello() {
-        return "Hallo von Spring Boot + Jib in der nächsten Version!";
+        return "Hallo von Spring Boot + Jib in der nächsten Version v0.1.5?";
     }
 }
