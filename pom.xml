@@ -77,7 +77,7 @@
             </platforms>
           </from>
           <container>
-            <creationTime>0</creationTime> <!-- stabile Timestamps: bessere Layer-Wiederverwendung -->
+            <creationTime>EPOCH</creationTime> <!-- stabile Timestamps: bessere Layer-Wiederverwendung -->
             <ports>
               <port>8080</port>
             </ports>
