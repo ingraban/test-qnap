@@ -12,11 +12,16 @@ jobs:
       contents: write   # für Release
     env:
       VERSION: ${{ github.ref_name }}                # z. B. v1.2.3
-      VERSION_PLAIN: ${{ github.ref_name && startsWith(github.ref_name, 'v') && replace(github.ref_name, 'v', '') || github.ref_name }}
       IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Strip leading 'v' from tag
+        run: |
+          VERSION="${{ github.ref_name }}"
+          VERSION_PLAIN="${VERSION#v}"   # entfernt das erste 'v'
+          echo "VERSION_PLAIN=$VERSION_PLAIN" >> $GITHUB_ENV
 
       - name: Set up Temurin JDK
         uses: actions/setup-java@v4
