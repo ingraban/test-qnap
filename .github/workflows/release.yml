@@ -1,4 +1,4 @@
-name: Release & Docker via Jib (tag-strict, multi-arch)
+name: Release and Docker via Jib (tag-strict, multi-arch)
 
 on:
   push:
