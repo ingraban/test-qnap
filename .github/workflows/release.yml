@@ -1,0 +1,65 @@
+name: Release & Docker via Jib (tag-strict, multi-arch)
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-release-jib:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # für Release
+    env:
+      VERSION: ${{ github.ref_name }}                # z. B. v1.2.3
+      VERSION_PLAIN: ${{ github.ref_name && startsWith(github.ref_name, 'v') && replace(github.ref_name, 'v', '') || github.ref_name }}
+      IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Temurin JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      # 0) POM-Version strikt aus dem Git-Tag setzen (v1.2.3 -> 1.2.3)
+      - name: Enforce POM version from tag
+        run: |
+          echo "Tag: $VERSION / Plain: $VERSION_PLAIN"
+          mvn -B versions:set -DnewVersion="${VERSION_PLAIN}" -DgenerateBackupPoms=false
+
+      # 1) JAR bauen (Version = Tag)
+      - name: Build JAR
+        run: mvn -B -DskipTests package
+
+      - name: Upload JAR as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-jar
+          path: target/app.jar
+
+      # 2) GitHub Release erstellen
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ env.VERSION }}
+          tag_name: ${{ env.VERSION }}
+          generate_release_notes: true
+          files: |
+            target/app.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 3) Multi-Arch Image mit Jib bauen & pushen
+      #    Die Plattformen sind in pom.xml konfiguriert; Jib erzeugt eine Manifest List.
+      - name: Build & Push multi-arch image with Jib
+        run: >
+          mvn -B -DskipTests
+          -Dimage=${{ env.IMAGE }}
+          -Djib.to.tags=latest,${{ env.VERSION_PLAIN }}
+          -Djib.to.auth.username=${{ secrets.DOCKERHUB_USERNAME }}
+          -Djib.to.auth.password=${{ secrets.DOCKERHUB_TOKEN }}
+          jib:build
