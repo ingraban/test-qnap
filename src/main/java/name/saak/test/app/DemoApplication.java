@@ -1,4 +1,4 @@
-package com.example.app;
+package name.saak.test.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

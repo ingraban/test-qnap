@@ -40,6 +40,36 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+	  	<dependency>
+	    	<groupId>org.springframework.boot</groupId>
+	    	<artifactId>spring-boot-starter-security</artifactId>
+	  	</dependency>
+	  
+		<!-- Jakarta Mail (Implementierung) -->
+        <dependency>
+            <groupId>jakarta.mail</groupId>
+            <artifactId>jakarta.mail-api</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.eclipse.angus</groupId>
+            <artifactId>jakarta.mail</artifactId>
+        </dependency>
+
+		<!-- HTML-Sanitizer -->
+	    <dependency>
+	      <groupId>org.jsoup</groupId>
+	      <artifactId>jsoup</artifactId>
+	      <version>1.17.2</version>
+	    </dependency>
+
+		<!-- optional: für Plain-Text → HTML Escapes -->
+	    <dependency>
+	      <groupId>org.apache.commons</groupId>
+	      <artifactId>commons-text</artifactId>
+	      <version>1.11.0</version>
+	    </dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -62,7 +92,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${spring.boot.version}</version>
 				<configuration>
-					<mainClass>com.example.app.DemoApplication</mainClass>
+					<mainClass>name.saak.test.app.DemoApplication</mainClass>
 					<layers>
 						<enabled>true</enabled>
 					</layers>

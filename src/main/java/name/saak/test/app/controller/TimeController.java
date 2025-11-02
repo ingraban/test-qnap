@@ -1,4 +1,4 @@
-package com.example.app.controller;
+package name.saak.test.app.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 @Controller
 public class TimeController {
 
-    @GetMapping("/")
+    @GetMapping("/time")
     public String showCurrentTime(Model model) {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");

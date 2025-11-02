@@ -1,0 +1,25 @@
+<!-- src/main/resources/templates/eml-view.html -->
+<!doctype html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title th:text="'EML ' + ${mailId}">EML</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:1.5rem; }
+    .notice { font-size:.9rem; color:#666; margin:.5rem 0 1rem }
+    .mail { border:1px solid #ddd; border-radius:8px; padding:1rem; background:#fff; }
+    img { max-width:100%; height:auto }
+    pre { white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <p class="notice">
+    Achtung: Inhalte wurden sanitisiert; externe Ressourcen sind ggf. blockiert.
+    <a th:href="@{/}">Weitere EML anzeigen</a>
+  </p>
+
+  <!-- Wichtig: th:utext rendert bereits SANITIZED HTML! -->
+  <article class="mail" th:utext="${html}">(kein Inhalt)</article>
+</body>
+</html>
