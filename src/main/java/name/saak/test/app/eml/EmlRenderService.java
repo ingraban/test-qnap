@@ -25,15 +25,15 @@ public class EmlRenderService {
 		Map<String, String> ctypeByCid = new HashMap<>();
 
 		if (content instanceof Multipart mp) {
+			// Zuerst alle Inline-Parts sammeln (rekursiv)
 			for (int i = 0; i < mp.getCount(); i++) {
 				BodyPart part = mp.getBodyPart(i);
 				collectPart(part, byCid, ctypeByCid);
-				if (part.isMimeType("text/html") && !isAttachment(part)) {
-					html = (String) part.getContent();
-				} else if (part.isMimeType("text/plain") && !isAttachment(part)) {
-					plain = (String) part.getContent();
-				}
 			}
+			// Dann HTML und Plain extrahieren (rekursiv)
+			ContentResult result = extractContent(mp);
+			html = result.html;
+			plain = result.plain;
 		} else if (content instanceof String s) {
 			if (message.isMimeType("text/html")) html = s;
 			else plain = s;
@@ -63,6 +63,30 @@ public class EmlRenderService {
 
 		// Content-Security-Policy (optional in Controller-Header setzen)
 		return new RenderResult(mailId, sanitized);
+	}
+
+	private record ContentResult(String html, String plain) {}
+
+	private static ContentResult extractContent(Multipart mp) throws Exception {
+		String html = null, plain = null;
+
+		for (int i = 0; i < mp.getCount(); i++) {
+			BodyPart part = mp.getBodyPart(i);
+
+			if (part.isMimeType("text/html") && !isAttachment(part)) {
+				html = (String) part.getContent();
+			} else if (part.isMimeType("text/plain") && !isAttachment(part)) {
+				plain = (String) part.getContent();
+			} else if (part.isMimeType("multipart/*")) {
+				// Rekursiv in verschachtelte Multiparts gehen
+				Multipart nested = (Multipart) part.getContent();
+				ContentResult nestedResult = extractContent(nested);
+				if (nestedResult.html != null) html = nestedResult.html;
+				if (nestedResult.plain != null) plain = nestedResult.plain;
+			}
+		}
+
+		return new ContentResult(html, plain);
 	}
 
 	private static boolean isAttachment(BodyPart part) throws MessagingException {

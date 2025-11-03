@@ -18,12 +18,12 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(auth -> auth.requestMatchers("/", "/eml/**", "/css/**", "/js/**").permitAll() // alles offen; bei Bedarf anpassen
 				.anyRequest().authenticated())
-//				.csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-//				.headers(headers -> headers.contentSecurityPolicy(csp -> getPolicyDirectives(csp)).xssProtection(Customizer.withDefaults())
-//						.referrerPolicy(
-//								ref -> ref.policy(org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER))
-//						.frameOptions(frame -> frame.deny()).httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true).preload(true))
-//						.contentTypeOptions(Customizer.withDefaults()))
+				.csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+				.headers(headers -> headers.contentSecurityPolicy(csp -> getPolicyDirectives(csp)).xssProtection(Customizer.withDefaults())
+						.referrerPolicy(
+								ref -> ref.policy(org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER))
+						.frameOptions(frame -> frame.deny()).httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true).preload(true))
+						.contentTypeOptions(Customizer.withDefaults()))
 				// keine Login-Seite nötig; wenn Auth später gewünscht, hier .formLogin() ergänzen
 				.httpBasic(Customizer.withDefaults());
 
