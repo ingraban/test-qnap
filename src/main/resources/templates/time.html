@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aktuelle Uhrzeit</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script th:src="@{/js/app.js}" defer></script>
 </head>
 <body>
     <!-- Header Navigation -->
@@ -14,7 +15,7 @@
         <div class="time-container">
             <h2>Aktuelle Uhrzeit</h2>
             <div class="time-display" th:text="${currentTime}">--:--:--</div>
-            <button class="refresh-button" onclick="window.location.reload()">Aktualisieren</button>
+            <button class="refresh-button">Aktualisieren</button>
         </div>
     </div>
 </body>

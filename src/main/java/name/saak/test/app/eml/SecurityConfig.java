@@ -37,7 +37,7 @@ public class SecurityConfig {
 	}
 
 	private HeadersConfigurer<HttpSecurity>.ContentSecurityPolicyConfig getPolicyDirectives(HeadersConfigurer<HttpSecurity>.ContentSecurityPolicyConfig csp) {
-		return csp.policyDirectives("default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; form-action 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none';");
+		return csp.policyDirectives("default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; form-action 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none';");
 	}
 
 	@Bean
