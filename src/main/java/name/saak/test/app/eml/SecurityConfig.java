@@ -16,30 +16,28 @@ public class SecurityConfig {
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(auth -> auth.requestMatchers("/", "/eml/**", "/css/**", "/js/**").permitAll() // alles offen; bei Bedarf anpassen
-				.anyRequest().authenticated())
+		http.authorizeHttpRequests(auth -> auth
+				.requestMatchers("/css/**", "/js/**").permitAll() // Statische Ressourcen
+				.anyRequest().authenticated()) // Alle anderen Seiten erfordern Authentifizierung
 				.csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
 				.headers(headers -> headers.contentSecurityPolicy(csp -> getPolicyDirectives(csp)).xssProtection(Customizer.withDefaults())
 						.referrerPolicy(
 								ref -> ref.policy(org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER))
 						.frameOptions(frame -> frame.deny()).httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true).preload(true))
 						.contentTypeOptions(Customizer.withDefaults()))
-				// keine Login-Seite nötig; wenn Auth später gewünscht, hier .formLogin() ergänzen
-				.httpBasic(Customizer.withDefaults());
+				.formLogin(form -> form
+						.loginPage("/login")
+						.permitAll()
+						.defaultSuccessUrl("/", true))
+				.logout(logout -> logout
+						.logoutSuccessUrl("/login?logout")
+						.permitAll());
 
 		return http.build();
 	}
 
 	private HeadersConfigurer<HttpSecurity>.ContentSecurityPolicyConfig getPolicyDirectives(HeadersConfigurer<HttpSecurity>.ContentSecurityPolicyConfig csp) {
-		return csp.policyDirectives("""
-				default-src 'none';
-				img-src 'self' data:;
-				style-src 'self' 'unsafe-inline';
-				form-action 'self';
-				base-uri 'none';
-				object-src 'none';
-				frame-ancestors 'none';
-				""");
+		return csp.policyDirectives("default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; form-action 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none';");
 	}
 
 	@Bean
