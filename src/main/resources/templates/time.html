@@ -4,51 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aktuelle Uhrzeit</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 100px;
-            background-color: #f0f0f0;
-        }
-        .time-container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 40px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-            margin: 20px;
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .time-display {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #007bff;
-            margin: 20px 0;
-        }
-        .refresh-button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-        }
-        .refresh-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-    <div class="time-container">
-        <h1>Aktuelle Uhrzeit</h1>
-        <div class="time-display" th:text="${currentTime}">--:--:--</div>
-        <button class="refresh-button" onclick="window.location.reload()">Aktualisieren</button>
+    <!-- Header Navigation -->
+    <th:block th:replace="~{fragments/header :: header('time')}"></th:block>
+
+    <div class="container center">
+        <div class="time-container">
+            <h2>Aktuelle Uhrzeit</h2>
+            <div class="time-display" th:text="${currentTime}">--:--:--</div>
+            <button class="refresh-button" onclick="window.location.reload()">Aktualisieren</button>
+        </div>
     </div>
 </body>
 </html>

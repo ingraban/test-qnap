@@ -1,0 +1,23 @@
+<!-- src/main/resources/templates/fragments/header.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+  <!-- Header Fragment -->
+  <header class="header" th:fragment="header(activePage)">
+    <div class="header-content">
+      <h1>Testanwendung</h1>
+      <nav class="nav">
+        <a href="/" th:classappend="${activePage == 'email'} ? 'active' : ''">E-Mail anzeigen</a>
+        <a href="/time" th:classappend="${activePage == 'time'} ? 'active' : ''">Zeit anzeigen</a>
+        <form th:action="@{/logout}" method="post">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+          <button type="submit">Abmelden</button>
+        </form>
+      </nav>
+    </div>
+  </header>
+</body>
+</html>
+
