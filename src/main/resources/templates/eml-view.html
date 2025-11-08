@@ -17,6 +17,29 @@
       <a th:href="@{/}">Weitere EML anzeigen</a>
     </p>
 
+    <!-- E-Mail Header -->
+    <div class="mail-header">
+      <h2 th:text="${subject}">Betreff</h2>
+      <table class="mail-header-table">
+        <tr th:if="${from != null and !from.isEmpty()}">
+          <td class="header-label">Von:</td>
+          <td class="header-value" th:text="${from}">Absender</td>
+        </tr>
+        <tr th:if="${to != null and !to.isEmpty()}">
+          <td class="header-label">An:</td>
+          <td class="header-value" th:text="${to}">Empfänger</td>
+        </tr>
+        <tr th:if="${cc != null and !cc.isEmpty()}">
+          <td class="header-label">CC:</td>
+          <td class="header-value" th:text="${cc}">CC-Empfänger</td>
+        </tr>
+        <tr th:if="${date != null and !date.isEmpty()}">
+          <td class="header-label">Datum:</td>
+          <td class="header-value" th:text="${date}">Datum</td>
+        </tr>
+      </table>
+    </div>
+
     <!-- Wichtig: th:utext rendert bereits SANITIZED HTML! -->
     <article class="mail" th:utext="${html}">(kein Inhalt)</article>
   </div>

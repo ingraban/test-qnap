@@ -33,6 +33,11 @@ public class EmlController {
 
 		model.addAttribute("mailId", res.mailId());
 		model.addAttribute("html", res.sanitizedHtml());
+		model.addAttribute("from", res.from());
+		model.addAttribute("to", res.to());
+		model.addAttribute("cc", res.cc());
+		model.addAttribute("date", res.date());
+		model.addAttribute("subject", res.subject());
 		return "eml-view"; // templates/eml-view.html
 	}
 
