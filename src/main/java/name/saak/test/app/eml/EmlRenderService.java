@@ -11,7 +11,7 @@ import java.util.*;
 
 public class EmlRenderService {
 
-	public record RenderResult(String mailId, String sanitizedHtml, String from, String to, String cc, String date, String subject) {}
+	public record RenderResult(String mailId, String sanitizedHtml, String from, String to, String cc, Date date, String subject) {}
 
 	public RenderResult render(InputStream emlStream, String mailId, String baseUrl) throws Exception {
 		Session session = Session.getInstance(System.getProperties());
@@ -65,7 +65,7 @@ public class EmlRenderService {
 		String from = message.getFrom() != null && message.getFrom().length > 0 ? message.getFrom()[0].toString() : "";
 		String to = message.getRecipients(Message.RecipientType.TO) != null ? String.join(", ", Arrays.stream(message.getRecipients(Message.RecipientType.TO)).map(Object::toString).toArray(String[]::new)) : "";
 		String cc = message.getRecipients(Message.RecipientType.CC) != null ? String.join(", ", Arrays.stream(message.getRecipients(Message.RecipientType.CC)).map(Object::toString).toArray(String[]::new)) : "";
-		String date = message.getSentDate() != null ? message.getSentDate().toString() : "";
+		Date date = message.getSentDate();
 		String subject = message.getSubject() != null ? message.getSubject() : "";
 
 		// Content-Security-Policy (optional in Controller-Header setzen)
